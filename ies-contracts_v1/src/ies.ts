@@ -1,5 +1,3 @@
-import { Bytes } from "@graphprotocol/graph-ts";
-
 import {
   EvaluationCreated as EvaluationCreatedEvent,
   ImpactReportCreated as ImpactReportCreatedEvent,
@@ -114,6 +112,7 @@ export function handleProfileCreated(event: ProfileCreatedEvent): void {
   entity.name = event.params.name;
   entity.metadata = event.params.metadata;
   entity.owner = event.params.owner;
+  entity.imageURL = event.params.imageURL;
 
   entity.blockNumber = event.block.number;
   entity.blockTimestamp = event.block.timestamp;
@@ -135,22 +134,6 @@ export function handleRoleAdminChanged(event: RoleAdminChangedEvent): void {
   entity.transactionHash = event.transaction.hash;
 
   entity.save();
-}
-
-export function handleRoleCreated(event: RoleCreatedEvent): void {
-  // let entity = new RoleCreated(
-  //   event.transaction.hash.concatI32(event.logIndex.toI32())
-  // );
-  // entity.projectHatid = event.params.projectHatid;
-  // entity.reportHatId = event.params.reportHatId;
-  // entity.roleHatId = event.params.roleHatId;
-  // entity.wearers = event.params.wearers;
-  // entity.metadata = event.params.metadata;
-  // entity.imageURL = event.params.imageURL;
-  // entity.blockNumber = event.block.number;
-  // entity.blockTimestamp = event.block.timestamp;
-  // entity.transactionHash = event.transaction.hash;
-  // entity.save();
 }
 
 export function handleRoleGranted(event: RoleGrantedEvent): void {

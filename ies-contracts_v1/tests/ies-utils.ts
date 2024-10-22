@@ -145,7 +145,8 @@ export function createProfileCreatedEvent(
   hatId: BigInt,
   name: string,
   metadata: string,
-  owner: Address
+  owner: Address,
+  imageURL: string
 ): ProfileCreated {
   let profileCreatedEvent = changetype<ProfileCreated>(newMockEvent())
 
@@ -165,6 +166,9 @@ export function createProfileCreatedEvent(
   )
   profileCreatedEvent.parameters.push(
     new ethereum.EventParam("owner", ethereum.Value.fromAddress(owner))
+  )
+  profileCreatedEvent.parameters.push(
+    new ethereum.EventParam("imageURL", ethereum.Value.fromString(imageURL))
   )
 
   return profileCreatedEvent

@@ -168,6 +168,10 @@ export class ProfileCreated__Params {
   get owner(): Address {
     return this._event.parameters[4].value.toAddress();
   }
+
+  get imageURL(): string {
+    return this._event.parameters[5].value.toString();
+  }
 }
 
 export class RoleAdminChanged extends ethereum.Event {
@@ -527,17 +531,21 @@ export class IES extends ethereum.SmartContract {
   attest(
     profileId: Bytes,
     contributors: Array<Address>,
-    proposal: string,
-    metadataUID: string
+    description: string,
+    metadataUID: string,
+    proposer: Address,
+    links: Array<string>
   ): Bytes {
     let result = super.call(
       "attest",
-      "attest(bytes32,address[],string,string):(bytes32)",
+      "attest(bytes32,address[],string,string,address,string[]):(bytes32)",
       [
         ethereum.Value.fromFixedBytes(profileId),
         ethereum.Value.fromAddressArray(contributors),
-        ethereum.Value.fromString(proposal),
-        ethereum.Value.fromString(metadataUID)
+        ethereum.Value.fromString(description),
+        ethereum.Value.fromString(metadataUID),
+        ethereum.Value.fromAddress(proposer),
+        ethereum.Value.fromStringArray(links)
       ]
     );
 
@@ -547,17 +555,21 @@ export class IES extends ethereum.SmartContract {
   try_attest(
     profileId: Bytes,
     contributors: Array<Address>,
-    proposal: string,
-    metadataUID: string
+    description: string,
+    metadataUID: string,
+    proposer: Address,
+    links: Array<string>
   ): ethereum.CallResult<Bytes> {
     let result = super.tryCall(
       "attest",
-      "attest(bytes32,address[],string,string):(bytes32)",
+      "attest(bytes32,address[],string,string,address,string[]):(bytes32)",
       [
         ethereum.Value.fromFixedBytes(profileId),
         ethereum.Value.fromAddressArray(contributors),
-        ethereum.Value.fromString(proposal),
-        ethereum.Value.fromString(metadataUID)
+        ethereum.Value.fromString(description),
+        ethereum.Value.fromString(metadataUID),
+        ethereum.Value.fromAddress(proposer),
+        ethereum.Value.fromStringArray(links)
       ]
     );
     if (result.reverted) {
@@ -572,17 +584,21 @@ export class IES extends ethereum.SmartContract {
     _contributors: Array<Address>,
     _description: string,
     _imageURL: string,
+    _reportMetadata: string,
+    _links: Array<string>,
     _proposor: Address,
     _roleData: Array<Bytes>
   ): IES__createReportResult {
     let result = super.call(
       "createReport",
-      "createReport(uint256,address[],string,string,address,bytes[]):(uint256,uint256,uint256)",
+      "createReport(uint256,address[],string,string,string,string[],address,bytes[]):(uint256,uint256,uint256)",
       [
         ethereum.Value.fromUnsignedBigInt(_hatId),
         ethereum.Value.fromAddressArray(_contributors),
         ethereum.Value.fromString(_description),
         ethereum.Value.fromString(_imageURL),
+        ethereum.Value.fromString(_reportMetadata),
+        ethereum.Value.fromStringArray(_links),
         ethereum.Value.fromAddress(_proposor),
         ethereum.Value.fromBytesArray(_roleData)
       ]
@@ -600,17 +616,21 @@ export class IES extends ethereum.SmartContract {
     _contributors: Array<Address>,
     _description: string,
     _imageURL: string,
+    _reportMetadata: string,
+    _links: Array<string>,
     _proposor: Address,
     _roleData: Array<Bytes>
   ): ethereum.CallResult<IES__createReportResult> {
     let result = super.tryCall(
       "createReport",
-      "createReport(uint256,address[],string,string,address,bytes[]):(uint256,uint256,uint256)",
+      "createReport(uint256,address[],string,string,string,string[],address,bytes[]):(uint256,uint256,uint256)",
       [
         ethereum.Value.fromUnsignedBigInt(_hatId),
         ethereum.Value.fromAddressArray(_contributors),
         ethereum.Value.fromString(_description),
         ethereum.Value.fromString(_imageURL),
+        ethereum.Value.fromString(_reportMetadata),
+        ethereum.Value.fromStringArray(_links),
         ethereum.Value.fromAddress(_proposor),
         ethereum.Value.fromBytesArray(_roleData)
       ]
@@ -1207,12 +1227,20 @@ export class AttestCall__Inputs {
     return this._call.inputValues[1].value.toAddressArray();
   }
 
-  get proposal(): string {
+  get description(): string {
     return this._call.inputValues[2].value.toString();
   }
 
   get metadataUID(): string {
     return this._call.inputValues[3].value.toString();
+  }
+
+  get proposer(): Address {
+    return this._call.inputValues[4].value.toAddress();
+  }
+
+  get links(): Array<string> {
+    return this._call.inputValues[5].value.toStringArray();
   }
 }
 
@@ -1291,12 +1319,20 @@ export class CreateReportCall__Inputs {
     return this._call.inputValues[3].value.toString();
   }
 
+  get _reportMetadata(): string {
+    return this._call.inputValues[4].value.toString();
+  }
+
+  get _links(): Array<string> {
+    return this._call.inputValues[5].value.toStringArray();
+  }
+
   get _proposor(): Address {
-    return this._call.inputValues[4].value.toAddress();
+    return this._call.inputValues[6].value.toAddress();
   }
 
   get _roleData(): Array<Bytes> {
-    return this._call.inputValues[5].value.toBytesArray();
+    return this._call.inputValues[7].value.toBytesArray();
   }
 }
 

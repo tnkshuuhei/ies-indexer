@@ -54,6 +54,7 @@ type ProfileCreated @entity(immutable: true) {
   name: String! # string
   metadata: String! # string
   owner: Bytes! # address
+  imageURL: String! # string
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
