@@ -6,9 +6,9 @@ dataSources:
     name: IES
     network: sepolia
     source:
-      address: "0x9214423D410364613631723aB68ed924c42f874b"
+      address: "0xf9434AE2AE265376Dc8AD92F43c194746070389f"
       abi: IES
-      startBlock: 0
+      startBlock: 6936770
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
