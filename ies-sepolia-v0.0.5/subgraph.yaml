@@ -1,0 +1,54 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: IES
+    network: sepolia
+    source:
+      address: "0xCE409480a92444df96b3B83B6441b08ba7c27ec1"
+      abi: IES
+      startBlock: 6955743
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - EvaluationCreated
+        - ImpactReportCreated
+        - Initialized
+        - MinimumDepositChanged
+        - PoolFunded
+        - ProfileCreated
+        - RoleAdminChanged
+        - RoleCreated
+        - RoleGranted
+        - RoleRevoked
+        - TreasuryUpdated
+      abis:
+        - name: IES
+          file: ./abis/IES.json
+      eventHandlers:
+        - event: EvaluationCreated(indexed uint256,indexed address)
+          handler: handleEvaluationCreated
+        - event: ImpactReportCreated(indexed uint256,indexed uint256,indexed uint256,address,string)
+          handler: handleImpactReportCreated
+        - event: Initialized(indexed address,indexed address,indexed address,address,bytes32,uint256)
+          handler: handleInitialized
+        - event: MinimumDepositChanged(indexed uint256)
+          handler: handleMinimumDepositChanged
+        - event: PoolFunded(indexed uint256,uint256)
+          handler: handlePoolFunded
+        - event: ProfileCreated(indexed bytes32,uint256,string,string,address,string)
+          handler: handleProfileCreated
+        - event: RoleAdminChanged(indexed bytes32,indexed bytes32,indexed bytes32)
+          handler: handleRoleAdminChanged
+        - event: RoleCreated(indexed uint256,uint256,uint256,address[],string,string)
+          handler: handleRoleCreated
+        - event: RoleGranted(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleGranted
+        - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleRevoked
+        - event: TreasuryUpdated(address)
+          handler: handleTreasuryUpdated
+      file: ./src/ies.ts
